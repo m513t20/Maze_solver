@@ -6,6 +6,7 @@
 #include <iostream>
 
 class Read_exception{};
+class solve_ecxception {};
 struct Pixel {
 public:
 	Pixel() {};

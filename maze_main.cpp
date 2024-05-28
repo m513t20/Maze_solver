@@ -36,8 +36,19 @@ void chck_mz() {
     char* name = new char[13] {'D', 'N', 'A', '_', 'M', 'A', 'Z', 'E', '.', 'b', 'm', 'p'};
     char* test = new char[13] {'b', 'o', 'x', '_', 't', 'e', 's', 't', '.', 'b', 'm', 'p'};
     char* color = new char[13] {'c', 'o', 'l', '_', 't', 'e', 's', 't', '.', 'b', 'm', 'p'};
-    m = Maze_solver(name);
-    m.solve();
+    try {
+        m = Maze_solver(name);
+    }
+    catch (Read_exception e) {
+        return;
+    }
+    try
+    {
+        m.solve();
+    }
+    catch (solve_ecxception e) {
+        return;
+    }
     m.save();
     delete[] name, test, color;
 }

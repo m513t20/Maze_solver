@@ -68,6 +68,11 @@ void Maze_solver::solve()
 		iter++;
 
 	}
+	if (to_mark.empty()) {
+		std::cout << "CANNOT BE SOLVED\n";
+		throw solve_ecxception();
+		return;
+	}
 	std::cout << iter << std::endl;
 	find_way();
 }
@@ -101,6 +106,8 @@ void Maze_solver::save()
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			saving << image[y][x].first << image[y][x].second << image[y][x].third;
+			for (int i = 0; i < padding; i++)
+				saving << '\0';
 		}
 	}
 	saving.close();
@@ -127,6 +134,12 @@ void Maze_solver::read()
 	int start_number = header[10] + (header[11] << 8) + (header[12] << 16) + (header[13] << 24);
 	int DIB_size = start_number - HEADER_SIZE;
 
+	if (!(DIB_size == 40)) {
+		std::cout << "Wrong file format (DIB SIZE)\n";
+		throw Read_exception();
+		return;
+	}
+
 	std::cout << '\n' << "size " << file_size;
 	std::cout << '\t' << "first_pixel_index= " << start_number;
 	std::cout << '\t' << "DIB_size= " << DIB_size << '\n';
@@ -145,6 +158,11 @@ void Maze_solver::read()
 	height = DIB[8] + (DIB[9] << 8) + (DIB[10] << 16) + (DIB[11] << 24);
 	int height_control = (image_size / 3) / width;
 	int bps = DIB[14] + (DIB[15] << 8);
+	if (!(bps == 24)) {
+		std::cout << "Wrong file format (bps)\n";
+		throw Read_exception();
+		return;
+	}
 
 	std::cout << '\n' << "res= " << width << 'x' << height;
 
